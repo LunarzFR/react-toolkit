@@ -5,6 +5,7 @@ import {
   withClassModifier,
   WithClassModifierOptions,
   compose,
+  identity,
 } from '@axa-fr/react-toolkit-core';
 
 const DEFAULT_CLASSNAME = 'af-title';
@@ -25,9 +26,10 @@ TitleRaw.defaultProps = defaultProps;
 
 export interface TitleProps extends WithClassModifierOptions, TitleBaseProps {}
 
-const enhance = compose<TitleBaseProps, TitleProps>(
+const enhance = compose(
+  identity<TitleBaseProps>(),
   withClassDefault(DEFAULT_CLASSNAME),
-  withClassModifier
+  withClassModifier()
 );
 
 const Enhanced = enhance(TitleRaw);

@@ -2,15 +2,17 @@ import {
   withClassDefault,
   withClassModifier,
   compose,
+  identity,
 } from '@axa-fr/react-toolkit-core';
-import Help from './Help';
+import Help, { Props } from './Help';
 
 export const enhance = compose(
+  identity<Props>(),
   withClassDefault('af-popover__container'),
-  withClassModifier
+  withClassModifier()
 );
 
-const enhanced = enhance(Help);
-enhanced.displayName = 'Help';
+const Enhanced = enhance(Help);
+Enhanced.displayName = 'Help';
 
-export default enhanced;
+export default Enhanced;
