@@ -42,14 +42,14 @@ steps:
         sonar.cfamily.build-wrapper-output.bypass=true
     condition: and(succeeded(), eq(variables['System.PullRequest.IsFork'], 'False'))
 
-  - script: npm i
+  - script: npm ci
     displayName: 'npm install'
 
   - script: npm test -- --coverage
     displayName: 'npm test'
 
-  - script: npm run lint
-    displayName: 'npm run lint'
+  - script: npm run check
+    displayName: 'npm run check'
 
   - script: npm run storybook:build
     displayName: 'build storybook'
@@ -80,8 +80,8 @@ steps:
 
   - script: node ./scripts/publish-docs.js $(Github.Token) && node ./scripts/publish-changelog.js $(Github.Token)
     displayName: 'push documentation and changelog'
-    condition: and(succeeded(), ne(variables['Npm.Publish.Version'], 'none'))
+    condition: and(succeeded(), notIn(variables['Npm.Publish.Version'], 'none', 'premajor', 'preminor', 'prepatch', 'prerelease'))
 
   - script: node ./scripts/twitter.js $(Twitter.consumer_key) $(Twitter.consumer_secret) $(Twitter.access_token) $(Twitter.access_token_secret)
     displayName: 'Auto tweet'
-    condition: and(succeeded(), ne(variables['Npm.Publish.Version'], 'none'))
+    condition: and(succeeded(), notIn(variables['Npm.Publish.Version'], 'none', 'premajor', 'preminor', 'prepatch', 'prerelease'))
